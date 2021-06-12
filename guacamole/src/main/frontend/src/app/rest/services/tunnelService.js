@@ -235,7 +235,8 @@ angular.module('rest').factory('tunnelService', ['$injector',
 
         // Acknowledge (and ignore) any received blobs
         stream.onblob = function acknowledgeData() {
-            stream.sendAck('OK', Guacamole.Status.Code.SUCCESS);
+            console.log('+++++++++++ downloadstream ack');
+            stream.sendAck('downloadstream', Guacamole.Status.Code.SUCCESS);
         };
 
         // Automatically remove iframe from DOM a few seconds after the stream

@@ -92,7 +92,7 @@ public class StreamInterceptingTunnel extends DelegatingGuacamoleTunnel {
             throws GuacamoleException {
 
         // Log beginning of intercepted stream
-        logger.debug("Intercepting output stream #{} of tunnel \"{}\".",
+        logger.info("++++++++ Intercepting output stream #{} of tunnel \"{}\".",
                 index, getUUID());
 
         try {
@@ -101,7 +101,7 @@ public class StreamInterceptingTunnel extends DelegatingGuacamoleTunnel {
 
         // Log end of intercepted stream
         finally {
-            logger.debug("Intercepted output stream #{} of tunnel \"{}\" ended.",
+            logger.info("++++++++ Intercepted output stream #{} of tunnel \"{}\" ended.",
                     index, getUUID());
         }
 
