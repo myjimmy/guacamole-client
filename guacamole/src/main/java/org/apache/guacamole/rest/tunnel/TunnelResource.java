@@ -40,6 +40,8 @@ import org.apache.guacamole.rest.activeconnection.APIActiveConnection;
 import org.apache.guacamole.rest.directory.DirectoryObjectResource;
 import org.apache.guacamole.rest.directory.DirectoryObjectResourceFactory;
 import org.apache.guacamole.tunnel.UserTunnel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A REST resource which abstracts the operations available for an individual
@@ -48,6 +50,9 @@ import org.apache.guacamole.tunnel.UserTunnel;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class TunnelResource {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(TunnelResource.class);
 
     /**
      * The media type to send as the content type of stream contents if no
@@ -173,6 +178,8 @@ public class TunnelResource {
             @QueryParam("type") @DefaultValue(DEFAULT_MEDIA_TYPE) String mediaType,
             @PathParam("filename") String filename)
             throws GuacamoleException {
+
+        logger.info("++++++++ TunnelResource:StreamResource: streamIndex=#{}, mediaType={}, filename={}", streamIndex, mediaType, filename);
 
         return new StreamResource(tunnel, streamIndex, mediaType);
 

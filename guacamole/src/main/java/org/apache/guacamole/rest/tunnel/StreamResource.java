@@ -33,6 +33,8 @@ import javax.ws.rs.core.StreamingOutput;
 import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.rest.RequestSizeFilter;
 import org.apache.guacamole.tunnel.StreamInterceptingTunnel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A REST resource providing access to a Guacamole protocol-level stream
@@ -41,6 +43,9 @@ import org.apache.guacamole.tunnel.StreamInterceptingTunnel;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class StreamResource {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(StreamResource.class);
 
     /**
      * The tunnel whose stream is exposed through this StreamResource.
@@ -94,6 +99,7 @@ public class StreamResource {
             @Override
             public void write(OutputStream output) throws IOException {
                 try {
+                    logger.info("++++++++++++ StreamResource:Response:StreamingOutput: streamIndex=" + streamIndex);
                     tunnel.interceptStream(streamIndex, output);
                 }
                 catch (GuacamoleException e) {

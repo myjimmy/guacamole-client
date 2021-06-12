@@ -85,7 +85,8 @@ Guacamole.BlobReader = function(stream, mimetype) {
             guac_reader.onprogress(arrayBuffer.byteLength);
 
         // Send success response
-        stream.sendAck("OK", 0x0000);
+        console.log('+++++++++++ blob ack');
+        stream.sendAck("BLOB", 0x0000);
 
     };
 

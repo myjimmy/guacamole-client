@@ -114,14 +114,18 @@ public class OutputStreamInterceptingFilter
 
         // Verify all required arguments are present
         List<String> args = instruction.getArgs();
-        if (args.size() < 2)
+        if (args.size() < 2) {
+            logger.info("++++++++++++ handleBlob: argument count is invalid.");
             return instruction;
+        }
 
         // Pull associated stream
         String index = args.get(0);
         InterceptedStream<OutputStream> stream = getInterceptedStream(index);
-        if (stream == null)
+        if (stream == null) {
+            logger.info("++++++++++++ handleBlob: stream is null.");
             return instruction;
+        }
 
         // Decode blob
         byte[] blob;
@@ -130,7 +134,7 @@ public class OutputStreamInterceptingFilter
             blob = BaseEncoding.base64().decode(data);
         }
         catch (IllegalArgumentException e) {
-            logger.warn("Received base64 data for intercepted stream was invalid.");
+            logger.info("++++++++++++ handleBlob: Received base64 data for intercepted stream was invalid.");
             logger.debug("Decoding base64 data for intercepted stream failed.", e);
             return null;
         }
@@ -145,16 +149,18 @@ public class OutputStreamInterceptingFilter
             // graphical session
             if (!acknowledgeBlobs) {
                 acknowledgeBlobs = true;
+                logger.info("++++++++++++ handleBlob: acknowledgeBlobs was false.");
                 return new GuacamoleInstruction("blob", index, "");
             }
 
             // Otherwise, acknowledge the blob on the client's behalf
-            sendAck(index, "OK", GuacamoleStatus.SUCCESS);
+            sendAck(index, "OK-JAVA1", GuacamoleStatus.SUCCESS);
+            logger.info("++++++++++++ handleBlob: sent ACK \"OK-JAVA1\".");
 
         }
         catch (IOException e) {
             sendAck(index, "FAIL", GuacamoleStatus.SERVER_ERROR);
-            logger.debug("Write failed for intercepted stream.", e);
+            logger.info("++++++++++++ handleBlob: Write failed for intercepted stream.", e);
         }
 
         // Instruction was handled purely internally
@@ -222,8 +228,10 @@ public class OutputStreamInterceptingFilter
     @Override
     protected void handleInterceptedStream(InterceptedStream<OutputStream> stream) {
 
+        logger.info("++++++++ OutputStreamInterceptingFilter:handleInterceptedStream:OK-JAVA2");
+
         // Acknowledge that the stream is ready to receive data
-        sendAck(stream.getIndex(), "OK", GuacamoleStatus.SUCCESS);
+        sendAck(stream.getIndex(), "OK-JAVA2", GuacamoleStatus.SUCCESS);
 
     }
 

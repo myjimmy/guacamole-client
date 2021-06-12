@@ -187,6 +187,8 @@ public abstract class StreamInterceptingFilter<T extends Closeable>
         InterceptedStream<T> interceptedStream;
         String indexString = Integer.toString(index);
 
+        logger.info("++++++++ StreamInterceptingFilter:interceptStream:Start index= #{}", index);
+
         // Atomically verify tunnel is open and add the given stream
         synchronized (tunnel) {
 
@@ -201,6 +203,8 @@ public abstract class StreamInterceptingFilter<T extends Closeable>
             streams.put(interceptedStream);
 
         }
+
+        logger.info("++++++++ StreamInterceptingFilter:interceptStream:End index= #{}", index);
 
         // Produce/consume all stream data
         handleInterceptedStream(interceptedStream);
