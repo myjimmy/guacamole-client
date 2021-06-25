@@ -230,6 +230,7 @@ angular.module('rest').factory('tunnelService', ['$injector',
         // Automatically remove iframe from DOM when download completes, if
         // browser supports tracking of iframe downloads via the "load" event
         iframe.onload = function downloadComplete() {
+            console.log("++++++++++++++ iframe.onload: iframe removed.");
             document.body.removeChild(iframe);
         };
 
@@ -242,8 +243,11 @@ angular.module('rest').factory('tunnelService', ['$injector',
         // Automatically remove iframe from DOM a few seconds after the stream
         // ends, in the browser does NOT fire the "load" event for downloads
         stream.onend = function downloadComplete() {
+            console.log("++++++++++++++ stream.onend: called.");
             $window.setTimeout(function cleanupIframe() {
+                console.log("++++++++++++++ stream.onend (STEP-1): iframe removed.");
                 if (iframe.parentElement) {
+                    console.log("++++++++++++++ stream.onend (STEP-2): iframe removed.");
                     document.body.removeChild(iframe);
                 }
             }, DOWNLOAD_CLEANUP_WAIT);
