@@ -89,15 +89,19 @@ public abstract class StreamInterceptingFilter<T extends Closeable>
 
         // Send successful "ack"
         try {
+            logger.info("++++++++++++++ sendInstruction:instruction=" + instruction.toString());
             writer.writeInstruction(instruction);
+            logger.info("++++++++++++++ sendInstruction:instruction written.");
         }
         catch (GuacamoleException e) {
-            logger.debug("Unable to send \"{}\" for intercepted stream.",
+            logger.info("Unable to send \"{}\" for intercepted stream.",
                     instruction.getOpcode(), e);
         }
 
         // Done writing
+        logger.info("++++++++++++++ sendInstruction:instruction done.");
         tunnel.releaseWriter();
+        logger.info("++++++++++++++ sendInstruction:instruction released.");
 
     }
 

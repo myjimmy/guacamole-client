@@ -245,6 +245,8 @@ public abstract class GuacamoleWebSocketTunnelEndpoint extends Endpoint {
                         // Attempt to read
                         while ((readMessage = reader.read()) != null) {
 
+                            logger.info("++++++++++++++++++++++++++++" + readMessage);
+
                             // Buffer message
                             buffer.append(readMessage);
 
@@ -298,6 +300,8 @@ public abstract class GuacamoleWebSocketTunnelEndpoint extends Endpoint {
     @OnMessage
     public void onMessage(String message) {
 
+        logger.info("++++++++++++++++++++++++++++ onmessage: " + message);
+
         // Ignore inbound messages if there is no associated tunnel
         if (tunnel == null)
             return;
@@ -341,17 +345,21 @@ public abstract class GuacamoleWebSocketTunnelEndpoint extends Endpoint {
         });
 
         try {
+            logger.info("++++++++++++++++++++++++++++ onmessage: before write");
             // Write received message
             writer.write(message.toCharArray());
+            logger.info("++++++++++++++++++++++++++++ onmessage: after write");
         }
         catch (GuacamoleConnectionClosedException e) {
-            logger.debug("Connection to guacd closed.", e);
+            logger.info("Connection to guacd closed.", e);
         }
         catch (GuacamoleException e) {
-            logger.debug("WebSocket tunnel write failed.", e);
+            logger.info("WebSocket tunnel write failed.", e);
         }
 
+        logger.info("++++++++++++++++++++++++++++ onmessage: before release");
         tunnel.releaseWriter();
+        logger.info("++++++++++++++++++++++++++++ onmessage: after release");
 
     }
     
