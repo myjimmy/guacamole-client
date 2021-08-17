@@ -207,6 +207,8 @@ angular.module('client').factory('guacClientManager', ['$injector',
      */
     service.getManagedClient = function getManagedClient(id) {
 
+        console.log("+++++ service.getManagedClient called");
+
         var managedClients = storedManagedClients();
 
         // Ensure any existing client is removed from its containing group
@@ -235,6 +237,8 @@ angular.module('client').factory('guacClientManager', ['$injector',
      */
     service.getManagedClientGroup = function getManagedClientGroup(id) {
 
+        console.log("+++++ getManagedClientGroup called");
+
         const managedClientGroups = storedManagedClientGroups();
         const existingGroup = _.find(managedClientGroups, (group) => {
             return id === ManagedClientGroup.getIdentifier(group);
@@ -246,6 +250,8 @@ angular.module('client').factory('guacClientManager', ['$injector',
 
         const clients = [];
         const clientIds = ManagedClientGroup.getClientIdentifiers(id);
+        console.log("+++++ getManagedClientGroup: id=" + id);
+        console.log("+++++ getManagedClientGroup: clientIds=", clientIds);
 
         // Separate active clients by whether they should be displayed within
         // the current view

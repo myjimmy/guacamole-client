@@ -249,6 +249,8 @@ angular.module('client').controller('clientController', ['$scope', '$routeParams
      */
     const reparseRoute = function reparseRoute() {
 
+        console.log("+++++ reparseRoute called");
+
         const previousClients = $scope.clientGroup ? $scope.clientGroup.clients.slice() : [];
 
         // Replace existing group with new group
@@ -317,6 +319,8 @@ angular.module('client').controller('clientController', ['$scope', '$routeParams
     };
 
     // Init sets of clients based on current URL ...
+    console.log("+++++ Will call reparseRoute");
+
     reparseRoute();
 
     // ... and re-initialize those sets if the URL has changed without

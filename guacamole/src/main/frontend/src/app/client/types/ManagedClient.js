@@ -346,18 +346,24 @@ angular.module('client').factory('ManagedClient', ['$rootScope', '$injector',
      */
     ManagedClient.getInstance = function getInstance(id) {
 
+        console.log("+++++ ManagedClient.getInstance called");
+
         var tunnel;
 
         // If WebSocket available, try to use it.
-        if ($window.WebSocket)
+        if ($window.WebSocket) {
             tunnel = new Guacamole.ChainedTunnel(
                 new Guacamole.WebSocketTunnel('websocket-tunnel'),
                 new Guacamole.HTTPTunnel('tunnel')
             );
+            console.log("+++++ 2 Tunnels created");
+        }
         
         // If no WebSocket, then use HTTP.
-        else
+        else {
             tunnel = new Guacamole.HTTPTunnel('tunnel');
+            console.log("+++++ 1 Tunnel created");
+        }
 
         // Get new client instance
         var client = new Guacamole.Client(tunnel);
@@ -609,12 +615,16 @@ angular.module('client').factory('ManagedClient', ['$rootScope', '$injector',
 
         // Parse connection details from ID
         var clientIdentifier = ClientIdentifier.fromString(id);
+        console.log("+++++ ManagedClient.getInstance: id = ", id);
+        console.log("+++++ ManagedClient.getInstance: clientIdentifier = ", clientIdentifier);
 
         // Defer actually connecting the Guacamole client until
         // ManagedClient.connect() is explicitly invoked
 
         // If using a connection, pull connection name and protocol information
         if (clientIdentifier.type === ClientIdentifier.Types.CONNECTION) {
+            console.log("+++++ ManagedClient.getInstance: clientIdentifier.type = ClientIdentifier.Types.CONNECTION");
+
             connectionService.getConnection(clientIdentifier.dataSource, clientIdentifier.id)
             .then(function connectionRetrieved(connection) {
                 managedClient.name = managedClient.title = connection.name;
@@ -623,6 +633,8 @@ angular.module('client').factory('ManagedClient', ['$rootScope', '$injector',
         
         // If using a connection group, pull connection name
         else if (clientIdentifier.type === ClientIdentifier.Types.CONNECTION_GROUP) {
+            console.log("+++++ ManagedClient.getInstance: clientIdentifier.type = ClientIdentifier.Types.CONNECTION_GROUP");
+
             connectionGroupService.getConnectionGroup(clientIdentifier.dataSource, clientIdentifier.id)
             .then(function connectionGroupRetrieved(group) {
                 managedClient.name = managedClient.title = group.name;
@@ -632,6 +644,8 @@ angular.module('client').factory('ManagedClient', ['$rootScope', '$injector',
         // If using an active connection, pull corresponding connection, then
         // pull connection name and protocol information from that
         else if (clientIdentifier.type === ClientIdentifier.Types.ACTIVE_CONNECTION) {
+            console.log("+++++ ManagedClient.getInstance: clientIdentifier.type = ClientIdentifier.Types.ACTIVE_CONNECTION");
+
             activeConnectionService.getActiveConnection(clientIdentifier.dataSource, clientIdentifier.id)
             .then(function activeConnectionRetrieved(activeConnection) {
 
@@ -669,6 +683,7 @@ angular.module('client').factory('ManagedClient', ['$rootScope', '$injector',
      *     browser window height will be used.
      */
     ManagedClient.connect = function connect(managedClient, width, height) {
+        console.log("++++++++++++++++++++ ManagedClient.connect", managedClient.clientState.connectionState);
 
         // Ignore if already connected
         if (managedClient.clientState.connectionState !== ManagedClientState.ConnectionState.IDLE)
@@ -676,10 +691,12 @@ angular.module('client').factory('ManagedClient', ['$rootScope', '$injector',
 
         // Parse connection details from ID
         const clientIdentifier = ClientIdentifier.fromString(managedClient.id);
+        console.log("++++++++++++++++++++ ManagedClient.connect", clientIdentifier);
 
         // Connect the Guacamole client
         getConnectString(clientIdentifier, width, height)
         .then(function connectClient(connectString) {
+            console.log("++++++++++++++++++++ getConnetString");
             managedClient.client.connect(connectString);
         });
 

@@ -98,6 +98,7 @@ angular.module('client').directive('guacClient', [function guacClient() {
          * @type Element
          */
         const main = $element[0];
+        console.log("+++++ guacClient.js: main=", main);
 
         /**
          * Guacamole mouse event object, wrapped around the main client
@@ -281,6 +282,8 @@ angular.module('client').directive('guacClient', [function guacClient() {
             if (!managedClient)
                 return;
 
+            console.log("+++++ $scope.$watch: $scope.client.clientProperties.scale=" + $scope.client.clientProperties.scale);
+
             // Get Guacamole client instance
             client = managedClient.client;
 
@@ -399,9 +402,11 @@ angular.module('client').directive('guacClient', [function guacClient() {
         $scope.mainElementResized = function mainElementResized() {
 
             // Send new display size, if changed
+            console.log("+++++ $scope.mainElementResized: STEP-1, main.offsetWidth=" + main.offsetWidth + " main.offsetHeight=" + main.offsetHeight);
             if (client && display && main.offsetWidth && main.offsetHeight) {
 
                 // Connect, if not already connected
+                console.log("+++++ $scope.mainElementResized: STEP-2");
                 ManagedClient.connect($scope.client, main.offsetWidth, main.offsetHeight);
 
                 const pixelDensity = $window.devicePixelRatio || 1;

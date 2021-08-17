@@ -53,12 +53,15 @@ Guacamole.Display = function() {
     display.style.OTransformOrigin =
     display.style.msTransformOrigin =
         "0 0";
+    display.setAttribute("class", "main_display");
 
     // Create default layer
     var default_layer = new Guacamole.Display.VisibleLayer(displayWidth, displayHeight);
+    default_layer.getElement().setAttribute("class", "default_layer");
 
     // Create cursor layer
     var cursor = new Guacamole.Display.VisibleLayer(0, 0);
+    cursor.getElement().setAttribute("class", "default_cursor");
     cursor.setChannelMask(Guacamole.Layer.SRC);
 
     // Add default layer and cursor to display
@@ -70,6 +73,7 @@ Guacamole.Display = function() {
     bounds.style.position = "relative";
     bounds.style.width = (displayWidth*displayScale) + "px";
     bounds.style.height = (displayHeight*displayScale) + "px";
+    bounds.setAttribute("class", "main_bounds");
 
     // Add display to bounds
     bounds.appendChild(display);
@@ -347,6 +351,8 @@ Guacamole.Display = function() {
      *     The element containing the Guacamole display.
      */
     this.getElement = function() {
+        console.log("+++++ Display.js: Guacamole.Display : getElement: bounds.width=" + bounds.style.width +
+            ", bounds.height=" + bounds.style.height);
         return bounds;
     };
 
@@ -1430,6 +1436,9 @@ Guacamole.Display = function() {
      */
     this.scale = function(scale) {
 
+        console.log("+++++ this.scale: scale=" + scale);
+        console.log("+++++ this.scale: displayWidth=" + displayWidth + ", displayHeight=" + displayHeight);
+
         display.style.transform =
         display.style.WebkitTransform =
         display.style.MozTransform =
@@ -1675,6 +1684,8 @@ Guacamole.Display.VisibleLayer = function(width, height) {
      *     The element containing this layer's canvas.
      */
     this.getElement = function() {
+        console.log("+++++ Display.js: Guacamole.Display.VisibleLayer: getElement: layer.width=" + layer.width
+            + ", layer.height=" + layer.height);
         return div;
     };
 
