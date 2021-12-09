@@ -105,11 +105,13 @@ angular.module('osk').directive('guacOsk', [function guacOsk() {
 
                         // Broadcast keydown for each key pressed
                         keyboard.onkeydown = function(keysym) {
+                            console.log("+++++ guacOsk.js: keyboard.onkeydown: keysym=" + keysym);
                             $rootScope.$broadcast('guacSyntheticKeydown', keysym);
                         };
                         
                         // Broadcast keydown for each key released 
                         keyboard.onkeyup = function(keysym) {
+                            console.log("+++++ guacOsk.js: keyboard.onkeyup: keysym=" + keysym);
                             $rootScope.$broadcast('guacSyntheticKeyup', keysym);
                         };
 

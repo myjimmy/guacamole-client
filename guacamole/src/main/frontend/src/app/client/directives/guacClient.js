@@ -537,12 +537,14 @@ angular.module('client').directive('guacClient', [function guacClient() {
 
         // Universally handle all synthetic keydown events
         $scope.$on('guacSyntheticKeydown', function syntheticKeydownListener(event, keysym) {
+            console.log("+++++ guacClientDecorator.js: $scope.$on('guacSyntheticKeydown'): keysym=" + keysym);
             if ($scope.client.clientProperties.focused)
                 client.sendKeyEvent(1, keysym);
         });
         
         // Universally handle all synthetic keyup events
         $scope.$on('guacSyntheticKeyup', function syntheticKeyupListener(event, keysym) {
+            console.log("+++++ guacClientDecorator.js: $scope.$on('guacSyntheticKeyup'): keysym=" + keysym);
             if ($scope.client.clientProperties.focused)
                 client.sendKeyEvent(0, keysym);
         });
