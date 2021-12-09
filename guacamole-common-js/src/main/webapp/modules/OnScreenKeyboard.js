@@ -292,6 +292,7 @@ Guacamole.OnScreenKeyboard = function(layout) {
         // Press key if not yet pressed
         if (!pressed[keyName]) {
 
+            console.log("+++++ OnScreenKeyboard.js: press: keyName=" + keyName + " keyElement=", keyElement);
             addClass(keyElement, "guac-keyboard-pressed");
 
             // Get current key based on modifier state
@@ -743,6 +744,7 @@ Guacamole.OnScreenKeyboard = function(layout) {
              *     The touch event being handled.
              */
             var mousePress = function mousePress(e) {
+                console.log("+++++ OnScreenKeyboard.js: mousePress: e=", e);
                 e.preventDefault();
                 if (ignoreMouse === 0)
                     press(object, keyElement);
