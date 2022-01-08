@@ -292,7 +292,7 @@ Guacamole.OnScreenKeyboard = function(layout) {
         // Press key if not yet pressed
         if (!pressed[keyName]) {
 
-            console.log("+++++ OnScreenKeyboard.js: press: keyName=" + keyName + " keyElement=", keyElement);
+            console.log("+++++ OnScreenKeyboard.js: press: keyName=" + keyName);
             addClass(keyElement, "guac-keyboard-pressed");
 
             // Get current key based on modifier state
@@ -300,6 +300,12 @@ Guacamole.OnScreenKeyboard = function(layout) {
 
             // Update modifier state
             if (key.modifier) {
+
+                // If AltGr key is pressed, we reset the keysym to 0 for preventing 
+                // that the key acts as Alt key.
+                // if (key.keysym && key.keysym == 0xfe03) {
+                //     key.keysym = 0;
+                // }
 
                 // Construct classname for modifier
                 var modifierClass = "guac-keyboard-modifier-" + getCSSName(key.modifier);
@@ -314,8 +320,10 @@ Guacamole.OnScreenKeyboard = function(layout) {
                     modifierKeysyms[key.modifier] = key.keysym;
                     
                     // Send key event only if keysym is meaningful
-                    if (key.keysym && osk.onkeydown)
+                    if (key.keysym && osk.onkeydown) {
+                        console.log("+++++ OnScreenKeyboard.js: press(modifier): osk.onkeydown called: key.keysym=" + key.keysym);
                         osk.onkeydown(key.keysym);
+                    }
 
                 }
 
@@ -326,16 +334,20 @@ Guacamole.OnScreenKeyboard = function(layout) {
                     delete modifierKeysyms[key.modifier];
                     
                     // Send key event only if original keysym is meaningful
-                    if (originalKeysym && osk.onkeyup)
+                    if (originalKeysym && osk.onkeyup) {
+                        console.log("+++++ OnScreenKeyboard.js: press(modifier): osk.onkeyup called: originalKeysym=" + originalKeysym);
                         osk.onkeyup(originalKeysym);
+                    }
 
                 }
 
             }
 
             // If not modifier, send key event now
-            else if (osk.onkeydown)
+            else if (osk.onkeydown) {
+                console.log("+++++ OnScreenKeyboard.js: press(normal): osk.onkeydown called: key.keysym=" + key.keysym);
                 osk.onkeydown(key.keysym);
+            }
 
             // Mark key as pressed
             pressed[keyName] = true;
@@ -744,7 +756,6 @@ Guacamole.OnScreenKeyboard = function(layout) {
              *     The touch event being handled.
              */
             var mousePress = function mousePress(e) {
-                console.log("+++++ OnScreenKeyboard.js: mousePress: e=", e);
                 e.preventDefault();
                 if (ignoreMouse === 0)
                     press(object, keyElement);
